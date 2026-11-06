@@ -115,13 +115,12 @@ export function useVault() {
   useEffect(() => {
     const wallet = typeof window !== "undefined" ? window.ethereum : undefined;
     if (!wallet) return;
-    patch({ hasWallet: true });
 
     wallet
       .request({ method: "eth_accounts" })
       .then((accounts) => {
         const first = (accounts as string[])[0] ?? null;
-        patch({ account: first });
+        patch({ hasWallet: true, account: first });
         return refresh(first);
       })
       .catch(() => undefined);
