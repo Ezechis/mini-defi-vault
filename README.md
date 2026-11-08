@@ -67,11 +67,18 @@ Then:
 ```bash
 cd contracts
 source .env
-forge script script/Deploy.s.sol:DeployVault --rpc-url $SEPOLIA_RPC_URL --broadcast
+forge script script/Deploy.s.sol:DeployVault --rpc-url $SEPOLIA_RPC_URL --broadcast \
+  --skip-simulation --gas-estimate-multiplier 130
 # optional: add  --verify --etherscan-api-key $ETHERSCAN_API_KEY
 ```
 
+`--skip-simulation` makes forge use the network's own gas estimate. Sepolia currently charges
+far more gas for contract creation (~3M for this Vault) than forge's local simulation predicts,
+so without it the deploy runs out of gas and reverts.
+
 Copy the `Vault deployed at: 0x…` address from the output.
+
+**Live deployment:** [`0xE1Cc93C32C11D660F4b49D1c001eC1362bd1c4DE`](https://sepolia.etherscan.io/address/0xE1Cc93C32C11D660F4b49D1c001eC1362bd1c4DE) on Sepolia.
 
 ## 3. Frontend
 
